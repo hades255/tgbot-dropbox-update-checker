@@ -27,13 +27,11 @@ const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: true });
 
 bot.onText(/\/echo/, (msg,) => {
   const chatId = msg.chat.id;
-  console.log("echo", chatId)
   bot.sendMessage(chatId, `Your member ID: ${chatId}`);
 });
 
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
-  console.log("start", chatId)
   if (chatId == CHAT_ID || allow) {
     if (!observers.includes(chatId)) observers.push(chatId)
     bot.sendMessage(chatId, "Bot is started! `/help` to see commands");
@@ -44,20 +42,17 @@ bot.onText(/\/start/, (msg) => {
 
 bot.onText(/\/stop/, (msg,) => {
   const chatId = msg.chat.id;
-  console.log("stop", chatId)
   observers = observers.filter(item => item != chatId)
   bot.sendMessage(chatId, "Bot is stopped");
 });
 
 bot.onText(/\/observers/, (msg,) => {
   const chatId = msg.chat.id;
-  console.log("observers", chatId)
   bot.sendMessage(chatId, `${observers.join(",\n")}\n${allow ? "Allowed" : "Rejected"} others to use this bot`);
 });
 
 bot.onText(/\/allow/, (msg,) => {
   const chatId = msg.chat.id;
-  console.log("allow", chatId)
   if (chatId == CHAT_ID) {
     allow = true
     bot.sendMessage(chatId, "reset successfully");
@@ -68,7 +63,6 @@ bot.onText(/\/allow/, (msg,) => {
 
 bot.onText(/\/reject/, (msg,) => {
   const chatId = msg.chat.id;
-  console.log("reject", chatId)
   if (chatId == CHAT_ID) {
     allow = false
     bot.sendMessage(chatId, "reset successfully");
@@ -79,22 +73,17 @@ bot.onText(/\/reject/, (msg,) => {
 
 bot.onText(/\/help/, (msg,) => {
   const chatId = msg.chat.id;
-  console.log("help", chatId)
-  bot.sendMessage(chatId, "`/start`: run the bot\n`/stop`: stop the bot\n`/observers`: show running users\n`/echo`: show your member id\n`/reset`: reset users\m`/allow`: allow others to tun the bot\n`/reject`: reject others to use the bot\n\n`/help`: see help");
+  bot.sendMessage(chatId, "`/start`: run the bot\n`/stop`: stop the bot\n`/observers`: show running users\n`/echo`: show your member id\n`/reset`: reset users\n`/allow`: allow others to tun the bot\n`/reject`: reject others to use the bot\n\n`/help`: see help");
 });
 
 bot.onText(/\/reset (.+)/, (msg, match) => {
   const chatId = msg.chat.id;
-  console.log("reset", chatId)
   if (chatId == CHAT_ID) {
     observers = [CHAT_ID]
     bot.sendMessage(chatId, "reset successfully");
   } else {
     bot.sendMessage(chatId, "401 ERROR");
   }
-  // const resp = match[1]; // the captured "whatever"
-  // observers = [CHAT_ID]
-  // bot.sendMessage(chatId, resp);
 });
 
 // Initialize watcher
